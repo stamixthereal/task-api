@@ -19,7 +19,8 @@ class Task(models.Model):
     status = models.CharField(
                             max_length=10,
                             choices=STATUS_CHOICES,
-                            default='Undone')
+                            default='Undone'
+                            )
 
     def __str__(self) -> str:
         return self.title
@@ -34,8 +35,14 @@ class Message(models.Model):
 
     user = models.CharField(max_length=50)
     text = models.TextField(max_length=5000)
-    parent = models.ForeignKey("self", verbose_name="parent", on_delete=models.SET_NULL, blank=True, null=True)
-    task = models.ForeignKey(Task, verbose_name="task", on_delete=models.CASCADE, related_name="messages")
+    parent = models.ForeignKey(
+                            "self", verbose_name="parent", on_delete=models.SET_NULL, 
+                            blank=True, null=True, related_name='children'
+                            )
+    task = models.ForeignKey(
+                            Task, verbose_name="task", 
+                            on_delete=models.CASCADE, related_name="messages"
+                            )
 
     def __str__(self):
         return f"{self.user} - {self.task}"
