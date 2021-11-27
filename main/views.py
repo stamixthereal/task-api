@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Task
-from .serializers import TaskListSerializer, TaskDetailSerializer
+from .serializers import TaskListSerializer, TaskDetailSerializer, MessageCreateSerializer
 
 
 class TaskListView(APIView):
@@ -20,3 +20,13 @@ class TaskDetailView(APIView):
         tasks = Task.objects.get(id=pk)
         serializer = TaskDetailSerializer(tasks, many=False)
         return Response(serializer.data)
+
+
+class MessageCreateView(APIView):
+    """Creating message to task"""
+
+    def post(self, request):
+        message = MessageCreateSerializer(data=request.data)
+        if message.is_valid():
+            message.save()
+        return Response(status=201)
