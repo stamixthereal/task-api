@@ -1,10 +1,10 @@
-from re import M
 from django.urls import path
 from . import views
+from rest_framework.routers import DefaultRouter
 
 
-urlpatterns = [
-    path('tasks/', views.TaskListView.as_view()),
-    path('tasks/task_<int:pk>/', views.TaskDetailView.as_view()),
-    path('message/', views.MessageCreateView.as_view())
-]
+router = DefaultRouter()
+router.register('tasks', views.TaskView, basename='tasks')
+router.register('message', views.MessageView, basename='message')
+
+urlpatterns = router.urls
