@@ -11,21 +11,12 @@ class TaskView(
     serializer_class = TaskListSerializer
     queryset = Task.objects.all()
 
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-
 
 class MessageView(
-            mixins.ListModelMixin, 
-            mixins.RetrieveModelMixin,
+            mixins.ListModelMixin,
+            mixins.CreateModelMixin,
             viewsets.GenericViewSet
             ):
 
     serializer_class = MessageCreateSerializer
     queryset = Message.objects.all()
-
-    def post(self, request, *args, **kwargs):
-        message = MessageCreateSerializer(data=request.data)
-        if message.is_valid():
-            message.save()
-        return self.create(request, *args, **kwargs)
